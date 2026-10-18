@@ -1,0 +1,72 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  docs:
+    name: Build and publish documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Build documentation
+        run: uv run --group docs mkdocs build --strict
+
+      - name: Trigger Read the Docs build
+        env:
+          RTD_API_TOKEN: ${{ secrets.RTD_API_TOKEN }}
+        run: |
+          if [ -z "$RTD_API_TOKEN" ]; then
+            echo "::error::The RTD_API_TOKEN secret is not configured."
+            exit 1
+          fi
+          curl --fail-with-body --request POST \
+            --header "Authorization: Token $RTD_API_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{}' \
+            https://readthedocs.org/api/v3/projects/bbox-vis/builds/
+
+  dist:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v7
+
+      - run: uv build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  publish:
+    needs: [dist]
+    name: Publish to PyPI
+    environment: pypi
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Remove this line to publish to PyPI
+          repository-url: https://test.pypi.org/legacy/

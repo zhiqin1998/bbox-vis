@@ -1,0 +1,123 @@
+[build-system]
+requires = ["uv_build>=0.10.9,<0.11.0"]
+build-backend = "uv_build"
+
+[project]
+name = "bbox-vis"
+version = "0.1.0"
+authors = [
+  { name = "Zhi Qin Tan", email = "zhiqin1998@hotmail.com" },
+]
+description = "A simple bounding box visualization tool based on Pillow"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Image Processing",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Typing :: Typed",
+]
+dependencies = [
+  "Pillow>=11.0.0"
+]
+
+[dependency-groups]
+dev = [
+  { include-group = "test" },
+  { include-group = "lint" },
+  { include-group = "docs" },
+  "pre-commit>=4.0",
+  "ipykernel>=6.0"
+]
+test = [
+  "pytest>=8.0",
+  "pytest-cov>=6.0",
+]
+lint = [
+  "ruff>=0.15",
+  "ty>=0.0.1a7",
+]
+docs = [
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocstrings[python]>=0.27",
+]
+
+[project.urls]
+Homepage = "https://github.com/zhiqin1998/bbox-vis"
+"Bug Tracker" = "https://github.com/zhiqin1998/bbox-vis/issues"
+Discussions = "https://github.com/zhiqin1998/bbox-vis/discussions"
+Changelog = "https://github.com/zhiqin1998/bbox-vis/releases"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = [
+  "error",
+]
+log_cli_level = "INFO"
+testpaths = [
+  "tests",
+]
+
+[tool.coverage]
+run.source = ["bbox_vis"]
+port.exclude_lines = [
+  'pragma: no cover',
+  '\.\.\.',
+  'if typing.TYPE_CHECKING:',
+]
+
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+
+[tool.ty.src]
+include = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # Pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "SIM",  # flake8-simplify
+  "C4",   # flake8-comprehensions
+  "PT",   # flake8-pytest-style
+  "G",    # flake8-logging-format
+  "PGH",  # pygrep-hooks
+  "RUF",  # Ruff-specific rules
+]
+ignore = ["E501"]
+unfixable = [
+  "F401",   # Would remove unused imports
+  "F841",   # Would remove unused variables
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["bbox_vis"]
+
+[tool.ruff.format]
+docstring-code-format = true

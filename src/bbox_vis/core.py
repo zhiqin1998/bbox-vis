@@ -1,23 +1,27 @@
 from collections.abc import Sequence
 from itertools import cycle, islice
+from typing import cast
 
 from PIL import Image, ImageDraw, ImageFont
 
 from ._colors import _DEFAULT_COLORS, _get_text_color, _validate_color
 from ._utils import _convert_bbox, _get_font_size, _get_thickness, _validate_bbox
 
+Color = tuple[int, int, int]
+Font = ImageFont.ImageFont | ImageFont.FreeTypeFont
+
 
 def draw_bbox(
     image: Image.Image,
     bbox: Sequence[float | int],
-    color: tuple[int, int, int] | None = None,
+    color: Color | None = None,
     bbox_format: str = "xyxy",
     bbox_is_normalized: bool = False,
     label: str | None = None,
     label_top: bool = True,
-    label_color: tuple[int, int, int] | None = None,
+    label_color: Color | None = None,
     thickness: int | None = None,
-    font: ImageFont.ImageFont | None = None,
+    font: Font | None = None,
     font_size: int | None = None,
     label_pad: int = 2,
 ) -> Image.Image:
@@ -81,10 +85,10 @@ def draw_label(
     bbox: Sequence[float | int],
     label: str,
     fill_color: tuple[int, int, int] | None = None,
-    label_color: tuple[int, int, int] | None = None,
+    label_color: Color | None = None,
     label_top: bool = True,
     thickness: int | None = None,
-    font: ImageFont.ImageFont | None = None,
+    font: Font | None = None,
     font_size: int | None = None,
     pad: int = 2,
     bbox_format: str = "xyxy",
@@ -119,6 +123,9 @@ def draw_label(
         if font_size is None:
             font_size = _get_font_size(image.size)
         font = ImageFont.load_default(size=font_size)
+    assert font is not None, (
+        "Failed to load default font, please provide a valid font object"
+    )
     if fill_color is None:
         fill_color = _DEFAULT_COLORS[0]
     if label_color is None:
@@ -182,14 +189,14 @@ def draw_label(
 def draw_multiple_bboxes(
     image: Image.Image,
     bboxes: Sequence[Sequence[float | int]],
-    colors: Sequence[tuple[int, int, int]] | tuple[int, int, int] | None = None,
+    colors: Sequence[Color] | Color | None = None,
     bbox_format: str = "xyxy",
     bbox_is_normalized: bool = False,
     labels: Sequence[str] | None = None,
     label_top: bool = True,
-    label_colors: Sequence[tuple[int, int, int]] | tuple[int, int, int] | None = None,
+    label_colors: Sequence[Color] | Color | None = None,
     thickness: int | None = None,
-    font: ImageFont.ImageFont | None = None,
+    font: Font | None = None,
     font_size: int | None = None,
     label_pad: int = 2,
 ) -> Image.Image:
@@ -213,24 +220,39 @@ def draw_multiple_bboxes(
         Image with the bounding boxes (and labels) drawn on it as a PIL Image object
 
     """
-    if isinstance(colors, Sequence) and not isinstance(colors[0], Sequence):
-        colors = [colors] * len(bboxes)
-    if isinstance(label_colors, Sequence) and not isinstance(label_colors[0], Sequence):
-        label_colors = [label_colors] * len(bboxes)
     if colors is None:
-        colors = list(islice(cycle(_DEFAULT_COLORS), len(bboxes)))
+        normalized_colors: list[Color] = list(
+            islice(cycle(_DEFAULT_COLORS), len(bboxes))
+        )
+    elif isinstance(colors[0], int):
+        normalized_colors = [cast(Color, colors)] * len(bboxes)
+    else:
+        normalized_colors = list(colors)
     if label_colors is None:
-        label_colors = [None] * len(bboxes)
-    if labels is None:
-        labels = [None] * len(bboxes)
-    assert len(colors) == len(bboxes), "Length of colors must match length of bboxes"
-    assert len(label_colors) == len(bboxes), (
+        normalized_label_colors: list[Color | None] = [None] * len(bboxes)
+    elif isinstance(label_colors[0], int):
+        normalized_label_colors = [cast(Color, label_colors)] * len(bboxes)
+    else:
+        normalized_label_colors = list(label_colors)
+    normalized_labels: Sequence[str | None] = (
+        labels if labels is not None else [None] * len(bboxes)
+    )
+    assert len(normalized_colors) == len(bboxes), (
+        "Length of colors must match length of bboxes"
+    )
+    assert len(normalized_label_colors) == len(bboxes), (
         "Length of label_colors must match length of bboxes"
     )
-    assert len(labels) == len(bboxes), "Length of labels must match length of bboxes"
+    assert len(normalized_labels) == len(bboxes), (
+        "Length of labels must match length of bboxes"
+    )
 
     for bbox, color, label_color, label in zip(
-        bboxes, colors, label_colors, labels, strict=True
+        bboxes,
+        normalized_colors,
+        normalized_label_colors,
+        normalized_labels,
+        strict=True,
     ):
         image = draw_bbox(
             image,
@@ -253,10 +275,10 @@ def draw_multiple_labels(
     image: Image.Image,
     bboxes: Sequence[Sequence[float | int]],
     labels: Sequence[str],
-    fill_colors: Sequence[tuple[int, int, int]] | tuple[int, int, int] | None = None,
-    label_colors: Sequence[tuple[int, int, int]] | tuple[int, int, int] | None = None,
+    fill_colors: Sequence[Color] | Color | None = None,
+    label_colors: Sequence[Color] | Color | None = None,
     label_top: bool = True,
-    font: ImageFont.ImageFont | None = None,
+    font: Font | None = None,
     font_size: int | None = None,
     pad: int = 2,
     bbox_format: str = "xyxy",
@@ -281,25 +303,31 @@ def draw_multiple_labels(
         Image with the labels drawn on it as a PIL Image object
 
     """
-    if isinstance(fill_colors, Sequence) and not isinstance(fill_colors[0], Sequence):
-        fill_colors = [fill_colors] * len(bboxes)
-    if isinstance(label_colors, Sequence) and not isinstance(label_colors[0], Sequence):
-        label_colors = [label_colors] * len(bboxes)
     if fill_colors is None:
-        fill_colors = list(islice(cycle(_DEFAULT_COLORS), len(bboxes)))
+        normalized_fill_colors: list[Color] = list(
+            islice(cycle(_DEFAULT_COLORS), len(bboxes))
+        )
+    elif isinstance(fill_colors[0], int):
+        normalized_fill_colors = [cast(Color, fill_colors)] * len(bboxes)
+    else:
+        normalized_fill_colors = list(fill_colors)
     if label_colors is None:
-        label_colors = [None] * len(bboxes)
+        normalized_label_colors: list[Color | None] = [None] * len(bboxes)
+    elif isinstance(label_colors[0], int):
+        normalized_label_colors = [cast(Color, label_colors)] * len(bboxes)
+    else:
+        normalized_label_colors = list(label_colors)
 
-    assert len(fill_colors) == len(bboxes), (
+    assert len(normalized_fill_colors) == len(bboxes), (
         "Length of fill_colors must match length of bboxes"
     )
-    assert len(label_colors) == len(bboxes), (
+    assert len(normalized_label_colors) == len(bboxes), (
         "Length of label_colors must match length of bboxes"
     )
     assert len(labels) == len(bboxes), "Length of labels must match length of bboxes"
 
     for bbox, label, fill_color, label_color in zip(
-        bboxes, labels, fill_colors, label_colors, strict=True
+        bboxes, labels, normalized_fill_colors, normalized_label_colors, strict=True
     ):
         image = draw_label(
             image,

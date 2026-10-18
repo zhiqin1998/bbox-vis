@@ -45,6 +45,7 @@ uv run pre-commit run --all-files
 ```
 
 ## Testing
+Recommend to run all tests before committing
 
 ```bash
 uv run pytest

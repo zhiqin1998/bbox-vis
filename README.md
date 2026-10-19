@@ -40,6 +40,48 @@ annotated.save("annotated.png")
 
 See the [usage guide](https://bbox-viz.readthedocs.io/en/latest/usage/) for more examples, including multiple boxes and normalized coordinates.
 
+## Example with a public dataset
+
+The example below draws annotations from the [COCO 2017 validation
+set](https://cocodataset.org/#download), using image `397133`
+(`000000397133.jpg`). COCO stores boxes as `(x, y, width, height)`, so pass
+`bbox_format="xywh"`:
+
+```python
+from pathlib import Path
+
+from PIL import Image
+
+from bbox_viz import draw_multiple_bboxes
+
+image = Image.open(Path("docs/assets/coco-397133.jpg"))
+
+# Ground-truth COCO annotations for image 397133.
+bboxes = [
+    (217.62, 240.54, 38.99, 57.75),    # bottle
+    (1.00, 240.24, 346.63, 186.76),    # dining table
+    (388.66, 69.92, 109.41, 277.62),   # person
+    (135.57, 249.43, 22.32, 28.79),    # knife
+]
+
+annotated = draw_multiple_bboxes(
+    image,
+    bboxes,
+    bbox_format="xywh",
+    labels=["bottle", "dining table", "person", "knife"],
+    thickness=3,
+)
+annotated.save("coco-397133-annotated.jpg")
+```
+
+![Original COCO image](docs/assets/coco-397133.jpg)
+
+*Original image from COCO image `397133`.*
+
+![COCO image with bounding boxes](docs/assets/coco-397133-annotated.jpg)
+
+*The same image rendered with `bbox-viz` and the COCO ground-truth boxes.*
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to contribute.

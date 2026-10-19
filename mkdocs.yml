@@ -6,6 +6,11 @@ repo_name: zhiqin1998/bbox-viz
 
 theme:
   name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
   language: en
   features:
     - navigation.sections

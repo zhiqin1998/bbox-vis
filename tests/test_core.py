@@ -1,13 +1,13 @@
 import pytest
 from PIL import Image
 
-from bbox_vis import (
+from bbox_viz import (
     draw_bbox,
     draw_label,
     draw_multiple_bboxes,
     draw_multiple_labels,
 )
-from bbox_vis._colors import _DEFAULT_COLORS
+from bbox_viz._colors import _DEFAULT_COLORS
 
 
 @pytest.fixture

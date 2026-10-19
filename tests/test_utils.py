@@ -1,7 +1,7 @@
 import pytest
 
-from bbox_vis._colors import _get_text_color, _validate_color
-from bbox_vis._utils import (
+from bbox_viz._colors import _get_text_color, _validate_color
+from bbox_viz._utils import (
     _convert_bbox,
     _get_font_size,
     _get_thickness,

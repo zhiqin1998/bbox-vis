@@ -3,7 +3,7 @@ requires = ["uv_build>=0.10.9,<0.11.0"]
 build-backend = "uv_build"
 
 [project]
-name = "bbox-vis"
+name = "bbox-viz"
 version = "0.1.0"
 authors = [
   { name = "Zhi Qin Tan", email = "zhiqin1998@hotmail.com" },
@@ -52,14 +52,16 @@ lint = [
 docs = [
   "mkdocs>=1.6",
   "mkdocs-material>=9.5",
-  "mkdocstrings[python]>=0.27",
+  "mkdocstrings[python]>=0.30,<1.0",
+  "Markdown<3.10",
+  "pymdown-extensions<12.2",
 ]
 
 [project.urls]
-Homepage = "https://github.com/zhiqin1998/bbox-vis"
-"Bug Tracker" = "https://github.com/zhiqin1998/bbox-vis/issues"
-Discussions = "https://github.com/zhiqin1998/bbox-vis/discussions"
-Changelog = "https://github.com/zhiqin1998/bbox-vis/releases"
+Homepage = "https://github.com/zhiqin1998/bbox-viz"
+"Bug Tracker" = "https://github.com/zhiqin1998/bbox-viz/issues"
+Discussions = "https://github.com/zhiqin1998/bbox-viz/discussions"
+Changelog = "https://github.com/zhiqin1998/bbox-viz/releases"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -74,7 +76,7 @@ testpaths = [
 ]
 
 [tool.coverage]
-run.source = ["bbox_vis"]
+run.source = ["bbox_viz"]
 port.exclude_lines = [
   'pragma: no cover',
   '\.\.\.',
@@ -117,7 +119,7 @@ unfixable = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["bbox_vis"]
+known-first-party = ["bbox_viz"]
 
 [tool.ruff.format]
 docstring-code-format = true

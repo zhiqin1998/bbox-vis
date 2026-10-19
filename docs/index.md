@@ -1,6 +1,6 @@
-# bbox-vis
+# bbox-viz
 
-**bbox-vis** is a small Python library for drawing bounding boxes and labels on [Pillow](https://python-pillow.org/) images.
+**bbox-viz** is a small Python library for drawing bounding boxes and labels on [Pillow](https://python-pillow.org/) images.
 
 It is designed for computer vision workflows where you want to inspect detections quickly without changing the source image.
 Every drawing function returns a copy of the input image.
@@ -19,7 +19,7 @@ Every drawing function returns a copy of the input image.
 ```python
 from PIL import Image
 
-from bbox_vis import draw_bbox
+from bbox_viz import draw_bbox
 
 image = Image.new("RGB", (400, 300), "white")
 annotated = draw_bbox(

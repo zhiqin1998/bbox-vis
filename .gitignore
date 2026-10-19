@@ -35,3 +35,6 @@ Thumbs.db
 # Misc
 *.log
 .ipynb_checkpoints/
+
+# mkdocs
+site/

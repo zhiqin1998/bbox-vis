@@ -5,7 +5,7 @@
 Install the latest released version with pip:
 
 ```bash
-python -m pip install bbox-vis
+python -m pip install bbox-viz
 ```
 
 The package supports Python 3.10 and later. Pillow is installed automatically as a runtime dependency.
@@ -15,8 +15,8 @@ The package supports Python 3.10 and later. Pillow is installed automatically as
 Clone the repository and install it in editable mode:
 
 ```bash
-git clone https://github.com/zhiqin1998/bbox-vis.git
-cd bbox-vis
+git clone https://github.com/zhiqin1998/bbox-viz.git
+cd bbox-viz
 python -m pip install -e .
 ```
 

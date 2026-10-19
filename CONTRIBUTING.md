@@ -1,4 +1,4 @@
-# Contributing to bbox-vis
+# Contributing to bbox-viz
 
 See the [Scientific Python Developer Guide][spc-dev-intro] for a detailed
 description of best practices for developing scientific packages.
@@ -16,8 +16,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ## Setup
 
 ```bash
-git clone https://github.com/zhiqin1998/bbox-vis
-cd bbox-vis
+git clone https://github.com/zhiqin1998/bbox-viz
+cd bbox-viz
 uv sync
 ```
 
@@ -54,7 +54,7 @@ uv run pytest
 With coverage:
 
 ```bash
-uv run pytest --cov=bbox_vis
+uv run pytest --cov=bbox_viz
 ```
 
 ## Type checking
@@ -71,7 +71,7 @@ triggers a Read the Docs build through its API.
 
 To configure this workflow, create a Read the Docs API token and add it to the
 repository as an Actions secret named `RTD_API_TOKEN`. The Read the Docs
-project slug must be `bbox-vis`.
+project slug must be `bbox-viz`.
 
 ## Building
 

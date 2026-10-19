@@ -1,8 +1,8 @@
-site_name: bbox-vis
+site_name: bbox-viz
 site_description: A simple bounding-box visualization tool based on Pillow
-site_url: https://bbox-vis.readthedocs.io/
-repo_url: https://github.com/zhiqin1998/bbox-vis
-repo_name: zhiqin1998/bbox-vis
+site_url: https://bbox-viz.readthedocs.io/
+repo_url: https://github.com/zhiqin1998/bbox-viz
+repo_name: zhiqin1998/bbox-viz
 
 theme:
   name: material

@@ -1,8 +1,8 @@
 # API reference
 
-The public API is available directly from the `bbox_vis` package:
+The public API is available directly from the `bbox_viz` package:
 
-::: bbox_vis
+::: bbox_viz
     options:
       members:
         - draw_bbox

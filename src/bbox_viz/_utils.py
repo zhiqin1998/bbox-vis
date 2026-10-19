@@ -1,4 +1,4 @@
-"""Internal utilities for bbox-vis"""
+"""Internal utilities for bbox-viz"""
 
 from collections.abc import Sequence
 from functools import lru_cache, wraps

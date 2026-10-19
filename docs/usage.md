@@ -7,7 +7,7 @@ Coordinates are `xyxy` by default: `(x_min, y_min, x_max, y_max)`.
 ```python
 from PIL import Image
 
-from bbox_vis import draw_bbox
+from bbox_viz import draw_bbox
 
 image = Image.new("RGB", (400, 400), "white")
 annotated = draw_bbox(
@@ -58,7 +58,7 @@ Bounding-box coordinates are rounded to integer pixel positions before drawing.
 A single RGB tuple can be shared by every box, or a list of colors can be supplied.
 
 ```python
-from bbox_vis import draw_multiple_bboxes
+from bbox_viz import draw_multiple_bboxes
 
 bboxes = [
     (20, 30, 150, 220),
@@ -81,7 +81,7 @@ When `labels`, `colors`, or `label_colors` are provided as lists, each list must
 Use `draw_label` when a label is needed without drawing a box:
 
 ```python
-from bbox_vis import draw_label
+from bbox_viz import draw_label
 
 annotated = draw_label(
     image,
@@ -95,7 +95,7 @@ annotated = draw_label(
 For multiple labels, use `draw_multiple_labels`:
 
 ```python
-from bbox_vis import draw_multiple_labels
+from bbox_viz import draw_multiple_labels
 
 annotated = draw_multiple_labels(
     image,
@@ -107,4 +107,4 @@ annotated = draw_multiple_labels(
 
 ## Complete example
 
-The repository includes an executable notebook with the examples used during development: [`examples/examples.ipynb`](https://github.com/zhiqin1998/bbox-vis/blob/main/examples/examples.ipynb).
+The repository includes an executable notebook with the examples used during development: [`examples/examples.ipynb`](https://github.com/zhiqin1998/bbox-viz/blob/main/examples/examples.ipynb).

@@ -1,5 +1,5 @@
 """
-bbox-vis: A simple bounding box visualization tool based on Pillow
+bbox-viz: A simple bounding box visualization tool based on Pillow
 """
 
 from __future__ import annotations
